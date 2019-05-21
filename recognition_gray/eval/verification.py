@@ -183,11 +183,11 @@ def load_bin(path, image_size):
   bins, issame_list = pickle.load(open(path, 'rb'))
   data_list = []
   for flip in [0,1]:
-    data = nd.empty((len(issame_list)*2, 3, image_size[0], image_size[1]))
+    data = nd.empty((len(issame_list)*2, 1, image_size[0], image_size[1]))
     data_list.append(data)
   for i in xrange(len(issame_list)*2):
     _bin = bins[i]
-    img = mx.image.imdecode(_bin,0)
+    img = mx.image.imdecode(_bin, 0)
     if img.shape[1]!=image_size[0]:
       img = mx.image.resize_short(img, image_size[0])
     img = nd.transpose(img, axes=(2, 0, 1))
@@ -384,7 +384,8 @@ def test_badcase(data_set, mx_model, batch_size, name='', data_extra = None, lab
   print(len(pouts), len(nouts))
   print('acc', acc)
   gap = 10
-  image_shape = (112,224,3)
+  image_shape = (112,224,1)
+  #change_mark
   out_dir = "./badcases"
   if not os.path.exists(out_dir):
     os.makedirs(out_dir)
@@ -414,7 +415,7 @@ def test_badcase(data_set, mx_model, batch_size, name='', data_extra = None, lab
     if len(name)>0:
       filename = name+"_"+filename
     filename = os.path.join(out_dir, filename)
-    img = np.zeros( (image_shape[0]*rows+20, image_shape[1]*cols+(cols-1)*gap, 3), dtype=np.uint8 )
+    img = np.zeros( (image_shape[0]*rows+20, image_shape[1]*cols+(cols-1)*gap, 1), dtype=np.uint8 )
     img[:,:,:] = 255
     text_color = (0,0,153)
     text_color = (255,178,102)
@@ -553,7 +554,7 @@ if __name__ == '__main__':
     sym = all_layers['fc1_output']
     model = mx.mod.Module(symbol=sym, context=ctx, label_names = None)
     #model.bind(data_shapes=[('data', (args.batch_size, 3, image_size[0], image_size[1]))], label_shapes=[('softmax_label', (args.batch_size,))])
-    model.bind(data_shapes=[('data', (args.batch_size, 3, image_size[0], image_size[1]))])
+    model.bind(data_shapes=[('data', (args.batch_size, 1, image_size[0], image_size[1]))])
     model.set_params(arg_params, aux_params)
     nets.append(model)
   time_now = datetime.datetime.now()

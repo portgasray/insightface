@@ -21,7 +21,8 @@ from mxnet import ndarray as nd
 #from ._ndarray_internal import _cvcopyMakeBorder as copyMakeBorder
 from mxnet import io
 from mxnet import recordio
-sys.path.append(os.path.join(os.path.dirname(__file__), 'common'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'common'))
+sys.path.append(os.path.join('/home/rd-lzhang/workspace/repo/face-reg/insightface/src', 'common'))
 import face_preprocess
 
 logger = logging.getLogger()
@@ -547,10 +548,10 @@ class FaceImageIter(io.DataIter):
 
     def check_data_shape(self, data_shape):
         """Checks if the input data shape is valid"""
-        if not len(data_shape) == 3:
-            raise ValueError('data_shape should have length 3, with dimensions CxHxW')
-        if not data_shape[0] == 3:
-            raise ValueError('This iterator expects inputs to have 3 channels.')
+        #if not len(data_shape) == 3:  #changed
+           #raise ValueError('data_shape should have length 3, with dimensions CxHxW')
+        #if not data_shape[0] == 3:
+            #raise ValueError('This iterator expects inputs to have 3 channels.')
 
     def check_valid_image(self, data):
         """Checks if the input data is valid"""
@@ -560,7 +561,7 @@ class FaceImageIter(io.DataIter):
     def imdecode(self, s):
         """Decodes a string or byte string to an NDArray.
         See mx.img.imdecode for more details."""
-        img = mx.image.imdecode(s) #mx.ndarray
+        img = mx.image.imdecode(s,flag=0) #mx.ndarray #changed
         return img
 
     def read_image(self, fname):

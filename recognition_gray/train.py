@@ -208,6 +208,7 @@ def train_net(args):
         context       = ctx,
         symbol        = sym,
     )
+    model.bind([("data", (args.batch_size, args.image_channel, image_size[0], image_size[1]))], [("softmax_label", (args.batch_size,))]) #changed
     val_dataiter = None
 
     if config.loss_name.find('triplet')>=0:

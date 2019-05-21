@@ -70,10 +70,10 @@ class FaceImageIter(io.DataIter):
         self.mean = mean
         self.nd_mean = None
         if self.mean:
-          self.mean = np.array(self.mean, dtype=np.float32).reshape(1,1,3)
-          self.nd_mean = mx.nd.array(self.mean).reshape((1,1,3))
+          self.mean = np.array(self.mean, dtype=np.float32).reshape(1,1,1)
+          self.nd_mean = mx.nd.array(self.mean).reshape((1,1,1))
 
-        self.check_data_shape(data_shape)
+        # self.check_data_shape(data_shape)
         self.provide_data = [(data_name, (batch_size,) + data_shape)]
         self.batch_size = batch_size
         self.data_shape = data_shape
@@ -242,6 +242,7 @@ class FaceImageIter(io.DataIter):
                     assert i < batch_size, 'Batch size must be multiples of augmenter output length'
                     #print(datum.shape)
                     batch_data[i][:] = self.postprocess_data(datum)
+                    #batch_data[i][:] = datum
                     batch_label[i][:] = label
                     i += 1
         except StopIteration:
@@ -265,7 +266,7 @@ class FaceImageIter(io.DataIter):
     def imdecode(self, s):
         """Decodes a string or byte string to an NDArray.
         See mx.img.imdecode for more details."""
-        img = mx.image.imdecode(s,0) #mx.ndarray
+        img = mx.image.imdecode(s, flag=0) #mx.ndarray
         return img
 
     def read_image(self, fname):
