@@ -37,6 +37,8 @@ def get_model(ctx, image_size, model_str, layer):
   model = mx.mod.Module(symbol=sym, context=ctx, label_names = None)
   #model.bind(data_shapes=[('data', (args.batch_size, 3, image_size[0], image_size[1]))], label_shapes=[('softmax_label', (args.batch_size,))])
   model.bind(data_shapes=[('data', (1, 3, image_size[0], image_size[1]))])
+  #gray scale
+  #model.bind(data_shapes=[('data', (1, 1, image_size[0], image_size[1]))])
   model.set_params(arg_params, aux_params)
   return model
 
@@ -85,6 +87,8 @@ class FaceModel:
 
   def get_feature(self, aligned):
     input_blob = np.expand_dims(aligned, axis=0)
+    ## gray scale
+    #input_blob = np.expand_dims(input_blob, axis = 0)
     data = mx.nd.array(input_blob)
     db = mx.io.DataBatch(data=(data,))
     self.model.forward(db, is_train=False)
