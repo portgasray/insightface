@@ -22,7 +22,7 @@ from mxnet import ndarray as nd
 from mxnet import io
 from mxnet import recordio
 #sys.path.append(os.path.join(os.path.dirname(__file__), 'common'))
-sys.path.append(os.path.join('/home/rd-lzhang/workspace/repo/face-reg/insightface/src', 'common'))
+sys.path.append(os.path.join('../src', 'common'))
 import face_preprocess
 
 logger = logging.getLogger()
